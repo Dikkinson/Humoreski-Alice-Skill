@@ -1,1 +1,10 @@
+click==7.1.2
 Flask==0.12.2
+itsdangerous==1.1.0
+Jinja2==2.11.3
+MarkupSafe==1.1.1
+pyaes==1.6.1
+pyasn1==0.4.8
+rsa==4.7.2
+Telethon==1.21.1
+Werkzeug==1.0.1

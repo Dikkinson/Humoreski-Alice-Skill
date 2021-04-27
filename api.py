@@ -45,42 +45,24 @@ def main():
 def handle_dialog(req, res):
     user_id = req['session']['user_id']
 
+    suggests = [
+        {'title': "Следующий", 'hide': True},
+    ]
+
     if req['session']['new']:
-        # Это новый пользователь.
-        # Инициализируем сессию и поприветствуем его.
-
-        sessionStorage[user_id] = {
-            'suggests': [
-                "Не хочу.",
-                "Не буду.",
-                "Отстань!",
-            ]
-        }
-
-        res['response']['text'] = 'Привет! Купи слона!'
-        res['response']['buttons'] = get_suggests(user_id)
+        res['response']['text'] = get_anek()
+        res['response']['buttons'] = suggests
         return
 
-    # Обрабатываем ответ пользователя.
     if req['request']['original_utterance'].lower() in [
-        'ладно',
-        'куплю',
-        'покупаю',
-        'хорошо',
+        'следующий'
     ]:
-        # Пользователь согласился, прощаемся.
-        res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!'
+        res['response']['text'] = get_anek()
+        res['response']['buttons'] = suggests
         return
 
-    # Если нет, то убеждаем его купить слона!
-    res['response']['text'] = 'Все говорят "%s", а ты купи слона!' % (
-        req['request']['original_utterance']
-    )
-    res['response']['buttons'] = get_suggests(user_id)
-
-# Функция возвращает две подсказки для ответа.
-def get_suggests(user_id):
-    session = sessionStorage[user_id]
+    res['response']['text'] = ''
+    res['response']['buttons'] = suggests
 
     # Выбираем две первые подсказки из массива.
     suggests = [
