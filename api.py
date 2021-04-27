@@ -1,26 +1,26 @@
-# coding: utf-8
-# Импортирует поддержку UTF-8.
 from __future__ import unicode_literals
-
-# Импортируем модули для работы с JSON и логами.
+from random import choice
 import json
 import logging
 
-# Импортируем подмодули Flask для запуска веб-сервиса.
 from flask import Flask, request
+
+
 app = Flask(__name__)
 
-
 logging.basicConfig(level=logging.DEBUG)
+
+with open('umorezki.txt', 'r', encoding="utf-8") as file:
+    data = json.load(file)
 
 # Хранилище данных о сессиях.
 sessionStorage = {}
 
+
 # Задаем параметры приложения Flask.
 @app.route("/", methods=['POST'])
-
 def main():
-# Функция получает тело запроса и возвращает ответ.
+    # Функция получает тело запроса и возвращает ответ.
     logging.info('Request: %r', request.json)
 
     response = {
@@ -40,6 +40,7 @@ def main():
         ensure_ascii=False,
         indent=2
     )
+
 
 # Функция для непосредственной обработки диалога.
 def handle_dialog(req, res):
@@ -64,23 +65,6 @@ def handle_dialog(req, res):
     res['response']['text'] = ''
     res['response']['buttons'] = suggests
 
-    # Выбираем две первые подсказки из массива.
-    suggests = [
-        {'title': suggest, 'hide': True}
-        for suggest in session['suggests'][:2]
-    ]
 
-    # Убираем первую подсказку, чтобы подсказки менялись каждый раз.
-    session['suggests'] = session['suggests'][1:]
-    sessionStorage[user_id] = session
-
-    # Если осталась только одна подсказка, предлагаем подсказку
-    # со ссылкой на Яндекс.Маркет.
-    if len(suggests) < 2:
-        suggests.append({
-            "title": "Ладно",
-            "url": "https://market.yandex.ru/search?text=слон",
-            "hide": True
-        })
-
-    return suggests
+def get_anek():
+    return choice(data)
